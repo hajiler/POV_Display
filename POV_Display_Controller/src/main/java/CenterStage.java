@@ -14,7 +14,7 @@ public class CenterStage extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setTitle("We in this bitch");
+        stage.setTitle("POV Display");
         BorderPane root = new BorderPane();
         root.setCenter(getCenter());
 
