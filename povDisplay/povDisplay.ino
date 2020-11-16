@@ -82,7 +82,7 @@ void setup() {
   Serial.begin(9600); 
  
   //Set 8 LED pins
-  for( int i = 2; i<10 ;i++ ) {
+  for( int i = 2; i<=10 ;i++ ) {
     pinMode(i, OUTPUT);
   }    
 }
