@@ -1,5 +1,5 @@
 //defines pins bounds of pins used for LED
-const short LED_START = 3;
+const short LED_START = 2;
 const short LED_END = 10;
 
 const bool SYMBOL_CONFIGURATIONS[37][5][8] = {
