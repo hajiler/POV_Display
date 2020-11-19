@@ -18,7 +18,7 @@ const short getLEDConfigIndexFrom(char c) {
     case ('2') : return 7;
     case ('1') : return 8;
     case ('0') : return 9;
-    case ('_') : return 10;
+    case (' ') : return 10;
     case ('A') : return 11;
     case ('B') : return 12;
     case ('C') : return 13;
