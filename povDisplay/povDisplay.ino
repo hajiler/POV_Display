@@ -1,6 +1,10 @@
 #include "Constants.h"
+//#include <SoftwareSerial.h>
+
+//SoftwareSerial HM10(11, 12);
 
 char message[10];
+bool gotMessage = false;
 
 const short getLEDConfigIndexFrom(char c) {
   switch(c) {
@@ -47,28 +51,42 @@ const short getLEDConfigIndexFrom(char c) {
 //checks for serial input, reads and prints message to POV
 void getIncoming() {
   if (Serial.available() > 0) {
+    Serial.println("Recieving");
     Serial.readBytesUntil('\n', message, 10);
+    gotMessage = true;
   }
-  
-  //print message
-  int messageIndex = 0;
-  while (message[messageIndex] != '#') {
-    printLetterToPOV(message[messageIndex]);
-    messageIndex++;
+
+  if (gotMessage) {
+    //print message
+    int messageIndex = 0;
+    while (message[messageIndex] != '#') {
+      printLetterToPOV(message[messageIndex]);
+      messageIndex++;
+    }
+    Serial.println("---------------");
   }
 }
 
 //Print single character to POV display
 void printLetterToPOV(char symbol) {
+  Serial.println(symbol);
   //get the index for the current characters LED configuragtion
-  const short symbolConfigIndex = getLEDConfigIndexFrom(symbol);
+  short symbolConfigIndex = getLEDConfigIndexFrom(symbol);
+  Serial.println(symbolConfigIndex);
   //print LED configuration as given by the above map
+  Serial.print("{ ");
   for (short curConfigColumn = 0; curConfigColumn < 5; curConfigColumn++) {
-    for (short curPin = LED_START; curPin <= LED_END; curPin++) {
+    Serial.print("{");
+    for (short curPin = LED_START; curPin < LED_END; curPin++) {
       int pinValue = (SYMBOL_CONFIGURATIONS[symbolConfigIndex][curConfigColumn][curPin - LED_START]) ? HIGH : LOW;
+      Serial.print(SYMBOL_CONFIGURATIONS[symbolConfigIndex][curConfigColumn][curPin - LED_START]);
       digitalWrite(curPin, pinValue);
+      digitalWrite(curPin, LOW);
+      Serial.print(",");
     }
+    Serial.print("}, ");
   }
+  Serial.println(" }");
   
   //print line spacing
   for (short curPin = LED_START; curPin <= LED_END; curPin++) {
@@ -80,6 +98,7 @@ void printLetterToPOV(char symbol) {
  
 void setup() { 
   Serial.begin(9600); 
+  //HM10.begin(9600);
  
   //Set 8 LED pins
   for( int i = LED_START; i<=LED_END ;i++ ) {
