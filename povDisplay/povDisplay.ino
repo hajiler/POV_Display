@@ -1,7 +1,8 @@
 #include "Constants.h"
-//#include <SoftwareSerial.h>
-
-//SoftwareSerial HM10(11, 12);
+#include <SoftwareSerial.h>
+#include <ArduinoBlue.h>
+SoftwareSerial HM10(11, 12);
+ArduinoBlue phone(HM10); 
 
 char message[10];
 bool gotMessage = false;
@@ -50,9 +51,9 @@ const short getLEDConfigIndexFrom(char c) {
 
 //checks for serial input, reads and prints message to POV
 void getIncoming() {
-  if (Serial.available() > 0) {
+  if (HM10.available() > 0) {
     Serial.println("Recieving");
-    Serial.readBytesUntil('\n', message, 10);
+    HM10.readBytesUntil('\n', message, 10);
     gotMessage = true;
   }
 
@@ -98,7 +99,7 @@ void printLetterToPOV(char symbol) {
  
 void setup() { 
   Serial.begin(9600); 
-  //HM10.begin(9600);
+  HM10.begin(9600);
  
   //Set 8 LED pins
   for( int i = LED_START; i<=LED_END ;i++ ) {
